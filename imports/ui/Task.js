@@ -4,7 +4,6 @@ import './Task.html';
 
 Template.Task.events({
   async 'change .toggle-checked'(event) {
-    // Toggle checked status in the database asynchronously
     await TasksCollection.updateAsync(this._id, {
       $set: { checked: event.target.checked },
     });
