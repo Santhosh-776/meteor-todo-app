@@ -9,4 +9,7 @@ Template.Task.events({
       $set: { checked: event.target.checked },
     });
   },
+  async 'click .delete-btn'() {
+    await TasksCollection.removeAsync(this._id);
+  },
 });
