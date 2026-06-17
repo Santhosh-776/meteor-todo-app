@@ -1,15 +1,26 @@
 import { Template } from 'meteor/templating';
+import { ReactiveVar } from 'meteor/reactive-var';
 import { TasksCollection } from '../api/tasksCollection';
 import './App.html';
 import './Task.js';
 
+Template.app.onCreated(function () {
+  this.categoryFilter = new ReactiveVar('');
+});
+
 Template.app.helpers({
   tasks() {
-    return TasksCollection.find({}, { sort: { position: 1 } });
+    const instance = Template.instance();
+    const filter = instance.categoryFilter.get();
+    const query = filter ? { category: filter } : {};
+    return TasksCollection.find(query, { sort: { position: 1 } });
   },
 });
 
 Template.app.events({
+  'change .category-filter'(event, templateInstance) {
+    templateInstance.categoryFilter.set(event.target.value);
+  },
   async 'submit .task-form'(event) {
     event.preventDefault();
 
