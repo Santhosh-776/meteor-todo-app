@@ -1,0 +1,82 @@
+<template name="app">
+  <div class="app-container">
+    <header>
+      <div class="app-header">
+        <h1>Task Manager</h1>
+      </div>
+    </header>
+
+    <div class="main-content">
+      <form class="task-form">
+        <input
+          type="text"
+          name="text"
+          placeholder="What needs to be done?"
+          required
+        />
+
+        <select name="category">
+          <option>Work</option>
+          <option>Personal</option>
+          <option>Urgent</option>
+          <option>Others</option>
+        </select>
+
+        <button type="submit">Add Task</button>
+      </form>
+
+      <!-- Kanban Board Container -->
+      <div class="kanban-board">
+        
+        <!-- Work Column -->
+        <div class="kanban-column">
+          <div class="column-header Work">
+            <h2>Work</h2>
+          </div>
+          <ul class="tasks-list" data-category="Work">
+            {{#each tasksByCategory "Work"}}
+              {{> Task}}
+            {{/each}}
+          </ul>
+        </div>
+
+        <!-- Personal Column -->
+        <div class="kanban-column">
+          <div class="column-header Personal">
+            <h2>Personal</h2>
+          </div>
+          <ul class="tasks-list" data-category="Personal">
+            {{#each tasksByCategory "Personal"}}
+              {{> Task}}
+            {{/each}}
+          </ul>
+        </div>
+
+        <!-- Urgent Column -->
+        <div class="kanban-column">
+          <div class="column-header Urgent">
+            <h2>Urgent</h2>
+          </div>
+          <ul class="tasks-list" data-category="Urgent">
+            {{#each tasksByCategory "Urgent"}}
+              {{> Task}}
+            {{/each}}
+          </ul>
+        </div>
+
+        <!-- Others Column -->
+        <div class="kanban-column">
+          <div class="column-header Others">
+            <h2>Others</h2>
+          </div>
+          <ul class="tasks-list" data-category="Others">
+            {{#each tasksByCategory "Others"}}
+              {{> Task}}
+            {{/each}}
+          </ul>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</template>

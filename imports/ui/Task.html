@@ -1,0 +1,17 @@
+<template name="Task">
+  <li class="task-item {{#if checked}}checked{{/if}}" data-id="{{_id}}">
+    <div class="task-content">
+      <label class="checkbox-container">
+        <input
+          type="checkbox"
+          checked="{{checked}}"
+          class="toggle-checked"
+        />
+        <span class="checkmark"></span>
+      </label>
+      <span class="category-badge {{category}}">{{category}}</span>
+      <span class="text">{{text}}</span>
+    </div>
+    <button class="delete-btn" title="Delete Task">&times;</button>
+  </li>
+</template>

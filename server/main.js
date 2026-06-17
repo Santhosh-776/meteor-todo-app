@@ -1,54 +1,31 @@
-import { Meteor } from "meteor/meteor";
-import { LinksCollection } from "/imports/api/links";
-import { Random } from "meteor/random";
-
-async function insertLink({ title, url }) {
-  await LinksCollection.insertAsync({ title, url, createdAt: new Date() });
-}
+import { Meteor } from 'meteor/meteor';
+import { TasksCollection } from '/imports/api/tasksCollection';
 
 Meteor.startup(async () => {
-  // If the Links collection is empty, add some data.
-  if ((await LinksCollection.find().countAsync()) === 0) {
-    await insertLink({
-      title: "Do the Tutorial",
-      url: "https://docs.meteor.com/tutorials/react/",
+  if (await TasksCollection.find().countAsync() === 0) {
+    await TasksCollection.insertAsync({
+      text: 'Finish assignment',
+      category: 'Work',
+      position: 0,
+      createdAt: new Date(),
     });
 
-    await insertLink({
-      title: "Follow the Guide",
-      url: "https://docs.meteor.com/tutorials/application-structure/",
+    await TasksCollection.insertAsync({
+      text: 'Buy groceries',
+      category: 'Personal',
+      position: 1,
+      createdAt: new Date(),
     });
 
-    await insertLink({
-      title: "Read the Docs",
-      url: "https://docs.meteor.com",
-    });
-
-    await insertLink({
-      title: "Discussions",
-      url: "https://forums.meteor.com",
-    });
-
-    await insertLink({
-      title: "Join us on Discord",
-      url: "https://discord.gg/6mS3wHNg",
-    });
-
-    await insertLink({
-      title: "Deploying in Galaxy",
-      url: "https://www.meteor.com/hosting",
+    await TasksCollection.insertAsync({
+      text: 'Fix production bug',
+      category: 'Urgent',
+      position: 2,
+      createdAt: new Date(),
     });
   }
 
-  // We publish the entire Links collection to all clients.
-  // In order to be fetched in real-time to the clients
-  Meteor.publish("links", function () {
-    return LinksCollection.find();
+  Meteor.publish('tasks', function () {
+    return TasksCollection.find();
   });
-});
-
-Meteor.methods({
-  about() {
-    return `This is a Meteor application running React with React Router. this is a generated id: ${Random.id()}`;
-  },
 });
