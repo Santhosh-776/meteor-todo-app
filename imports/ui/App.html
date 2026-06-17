@@ -1,5 +1,17 @@
 <template name="app">
-  <div class="container">
-    <h1>Simple Todos (Blaze)</h1>
+  <div class="app-container">
+    <header>
+      <div class="app-header">
+        <h1>Task Manager</h1>
+      </div>
+    </header>
+
+    <div class="main-content">
+      <ul id="tasks-list" class="tasks-list">
+        {{#each tasks}}
+          {{> Task}}
+        {{/each}}
+      </ul>
+    </div>
   </div>
 </template>
