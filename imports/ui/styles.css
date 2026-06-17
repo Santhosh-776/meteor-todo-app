@@ -1,34 +1,44 @@
 :root {
   /* Vibrant & Balanced Color Palette */
-  --bg-app: #0f172a; /* Slate 900 */
-  --bg-card: rgba(30, 41, 59, 0.7); /* Slate 800 with transparency for glassmorphism */
+  --bg-app: #0f172a;
+  /* Slate 900 */
+  --bg-card: rgba(30, 41, 59, 0.7);
+  /* Slate 800 with transparency for glassmorphism */
   --bg-input: #1e293b;
-  --text-primary: #f8fafc; /* Slate 50 */
-  --text-secondary: #94a3b8; /* Slate 400 */
-  --text-muted: #64748b; /* Slate 500 */
+  --text-primary: #f8fafc;
+  /* Slate 50 */
+  --text-secondary: #94a3b8;
+  /* Slate 400 */
+  --text-muted: #64748b;
+  /* Slate 500 */
   --border-color: rgba(255, 255, 255, 0.08);
   --border-hover: rgba(255, 255, 255, 0.15);
-  
+
   /* Primary Accent - Premium Violet/Indigo */
-  --color-accent: #6366f1; /* Indigo 500 */
+  --color-accent: #6366f1;
+  /* Indigo 500 */
   --color-accent-hover: #4f46e5;
   --color-accent-glow: rgba(99, 102, 241, 0.35);
 
   /* Categories Colors */
-  --color-work: #0ea5e9; /* Sky 500 */
+  --color-work: #0ea5e9;
+  /* Sky 500 */
   --color-work-bg: rgba(14, 165, 233, 0.15);
-  --color-personal: #10b981; /* Emerald 500 */
+  --color-personal: #10b981;
+  /* Emerald 500 */
   --color-personal-bg: rgba(16, 185, 129, 0.15);
-  --color-urgent: #ef4444; /* Red 500 */
+  --color-urgent: #ef4444;
+  /* Red 500 */
   --color-urgent-bg: rgba(239, 68, 68, 0.15);
-  --color-others: #64748b; /* Slate 500 */
+  --color-others: #64748b;
+  /* Slate 500 */
   --color-others-bg: rgba(100, 116, 139, 0.15);
 
   /* Shadow / Glass Effects */
   --shadow-premium: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
   --shadow-card: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
   --blur-glass: 12px;
-  
+
   --radius-lg: 1rem;
   --radius-md: 0.75rem;
   --radius-sm: 0.375rem;
@@ -46,7 +56,7 @@
 body {
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
   background-color: var(--bg-app);
-  background-image: 
+  background-image:
     radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.1) 0px, transparent 50%),
     radial-gradient(at 100% 100%, rgba(14, 165, 233, 0.08) 0px, transparent 50%);
   color: var(--text-primary);
@@ -206,6 +216,12 @@ body {
   border-color: var(--color-accent);
 }
 
+.filter-container select option,
+.task-form select option {
+  background-color: var(--bg-input);
+  color: var(--text-primary);
+}
+
 /* Tasks list styling */
 .tasks-list {
   list-style-type: none;
@@ -237,7 +253,8 @@ body {
   align-items: center;
   gap: 1rem;
   flex: 1;
-  cursor: grab; /* Grab handle styling */
+  cursor: grab;
+  /* Grab handle styling */
 }
 
 .task-content:active {
@@ -281,11 +298,11 @@ body {
   transition: var(--transition-smooth);
 }
 
-.checkbox-container:hover input ~ .checkmark {
+.checkbox-container:hover input~.checkmark {
   border-color: var(--color-accent);
 }
 
-.checkbox-container input:checked ~ .checkmark {
+.checkbox-container input:checked~.checkmark {
   background-color: var(--color-accent);
   border-color: var(--color-accent);
 }
@@ -296,7 +313,7 @@ body {
   display: none;
 }
 
-.checkbox-container input:checked ~ .checkmark::after {
+.checkbox-container input:checked~.checkmark::after {
   display: block;
 }
 

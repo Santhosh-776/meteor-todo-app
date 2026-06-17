@@ -2,7 +2,6 @@ import { Meteor } from 'meteor/meteor';
 import { TasksCollection } from '/imports/api/tasksCollection';
 
 Meteor.startup(async () => {
-  // If the Tasks collection is empty, add some seed data.
   if (await TasksCollection.find().countAsync() === 0) {
     await TasksCollection.insertAsync({
       text: 'Finish assignment',
@@ -25,4 +24,8 @@ Meteor.startup(async () => {
       createdAt: new Date(),
     });
   }
+
+  Meteor.publish('tasks', function () {
+    return TasksCollection.find();
+  });
 });

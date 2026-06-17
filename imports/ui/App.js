@@ -1,3 +1,4 @@
+import { Meteor } from 'meteor/meteor';
 import { Template } from 'meteor/templating';
 import { ReactiveVar } from 'meteor/reactive-var';
 import Sortable from 'sortablejs';
@@ -7,6 +8,7 @@ import './Task.js';
 
 Template.app.onCreated(function () {
   this.categoryFilter = new ReactiveVar('');
+  this.subscribe('tasks');
 });
 
 Template.app.onRendered(function () {
@@ -39,12 +41,11 @@ Template.app.onRendered(function () {
         }
       }
 
-      // Update positions in the database
-      allTasks.forEach(async (task, index) => {
-        await TasksCollection.updateAsync(task._id, {
-          $set: { position: index }
-        });
-      });
+      const tasksOrder = allTasks.map((task, index) => ({
+        id: task._id,
+        position: index
+      }));
+      await Meteor.callAsync('tasks.updatePositions', tasksOrder);
     }
   });
 });
@@ -70,16 +71,9 @@ Template.app.events({
 
     if (!text) return;
 
-    // Get total task count for positioning the new task at the end
     const totalCount = await TasksCollection.find().countAsync();
 
-    await TasksCollection.insertAsync({
-      text,
-      category,
-      position: totalCount,
-      checked: false,
-      createdAt: new Date(),
-    });
+    await Meteor.callAsync('tasks.insert', text, category, totalCount);
 
     event.target.reset();
   },
