@@ -13,7 +13,7 @@ Template.app.onRendered(function () {
   const list = this.find('#tasks-list');
   Sortable.create(list, {
     animation: 150,
-    handle: '.task-content', // Only drag by the content container to avoid interfering with delete button
+    handle: '.task-content',
     async onEnd(evt) {
       const movedId = evt.item.dataset.id;
       const nextSibling = evt.item.nextElementSibling;
