@@ -8,9 +8,9 @@
     "visualize": "meteor --production --extra-packages bundle-visualizer"
   },
   "dependencies": {
-    "meteor-node-stubs": "^1.2.12"
+    "meteor-node-stubs": "^1.2.12",
+    "sortablejs": "^1.15.7"
   },
-  "devDependencies": {},
   "meteor": {
     "mainModule": {
       "client": "client/main.js",
