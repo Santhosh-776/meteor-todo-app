@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@babel/runtime": "^8.0.0",
+    "jquery": "^4.0.0",
     "meteor-node-stubs": "^1.2.12",
     "sortablejs": "^1.15.7"
   },
