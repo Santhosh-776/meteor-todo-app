@@ -7,6 +7,24 @@
     </header>
 
     <div class="main-content">
+      <form class="task-form">
+        <input
+          type="text"
+          name="text"
+          placeholder="What needs to be done?"
+          required
+        />
+
+        <select name="category">
+          <option>Work</option>
+          <option>Personal</option>
+          <option>Urgent</option>
+          <option>Others</option>
+        </select>
+
+        <button type="submit">Add Task</button>
+      </form>
+
       <ul id="tasks-list" class="tasks-list">
         {{#each tasks}}
           {{> Task}}
