@@ -25,22 +25,58 @@
         <button type="submit">Add Task</button>
       </form>
 
-      <div class="filter-container">
-        <label for="category-filter">Filter: </label>
-        <select id="category-filter" class="category-filter">
-          <option value="">All Categories</option>
-          <option value="Work">Work</option>
-          <option value="Personal">Personal</option>
-          <option value="Urgent">Urgent</option>
-          <option value="Others">Others</option>
-        </select>
-      </div>
+      <!-- Kanban Board Container -->
+      <div class="kanban-board">
+        
+        <!-- Work Column -->
+        <div class="kanban-column">
+          <div class="column-header Work">
+            <h2>Work</h2>
+          </div>
+          <ul class="tasks-list" data-category="Work">
+            {{#each tasksByCategory "Work"}}
+              {{> Task}}
+            {{/each}}
+          </ul>
+        </div>
 
-      <ul id="tasks-list" class="tasks-list">
-        {{#each tasks}}
-          {{> Task}}
-        {{/each}}
-      </ul>
+        <!-- Personal Column -->
+        <div class="kanban-column">
+          <div class="column-header Personal">
+            <h2>Personal</h2>
+          </div>
+          <ul class="tasks-list" data-category="Personal">
+            {{#each tasksByCategory "Personal"}}
+              {{> Task}}
+            {{/each}}
+          </ul>
+        </div>
+
+        <!-- Urgent Column -->
+        <div class="kanban-column">
+          <div class="column-header Urgent">
+            <h2>Urgent</h2>
+          </div>
+          <ul class="tasks-list" data-category="Urgent">
+            {{#each tasksByCategory "Urgent"}}
+              {{> Task}}
+            {{/each}}
+          </ul>
+        </div>
+
+        <!-- Others Column -->
+        <div class="kanban-column">
+          <div class="column-header Others">
+            <h2>Others</h2>
+          </div>
+          <ul class="tasks-list" data-category="Others">
+            {{#each tasksByCategory "Others"}}
+              {{> Task}}
+            {{/each}}
+          </ul>
+        </div>
+
+      </div>
     </div>
   </div>
 </template>

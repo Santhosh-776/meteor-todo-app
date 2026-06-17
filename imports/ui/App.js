@@ -1,68 +1,42 @@
 import { Meteor } from 'meteor/meteor';
 import { Template } from 'meteor/templating';
-import { ReactiveVar } from 'meteor/reactive-var';
 import Sortable from 'sortablejs';
 import { TasksCollection } from '../api/tasksCollection';
 import './App.html';
 import './Task.js';
 
 Template.app.onCreated(function () {
-  this.categoryFilter = new ReactiveVar('');
   this.subscribe('tasks');
 });
 
 Template.app.onRendered(function () {
-  const list = this.find('#tasks-list');
-  Sortable.create(list, {
-    animation: 150,
-    handle: '.task-content',
-    async onEnd(evt) {
-      const movedId = evt.item.dataset.id;
-      const nextSibling = evt.item.nextElementSibling;
-      const nextId = nextSibling ? nextSibling.dataset.id : null;
+  // Query all column lists and initialize Sortable on each of them
+  const lists = this.findAll('.tasks-list');
+  lists.forEach(list => {
+    Sortable.create(list, {
+      group: 'kanban-tasks', // Same group allows dragging between columns
+      animation: 150,
+      handle: '.task-content',
+      async onEnd(evt) {
+        const movedId = evt.item.dataset.id;
+        const targetCategory = evt.to.dataset.category;
+        const sourceCategory = evt.from.dataset.category;
+        const newIndex = evt.newIndex;
 
-      const allTasks = await TasksCollection.find({}, { sort: { position: 1 } }).fetchAsync();
-      const movedTaskIndex = allTasks.findIndex(t => t._id === movedId);
-      if (movedTaskIndex === -1) return;
-
-      const [movedTask] = allTasks.splice(movedTaskIndex, 1);
-
-      if (nextId) {
-        const nextIndex = allTasks.findIndex(t => t._id === nextId);
-        allTasks.splice(nextIndex, 0, movedTask);
-      } else {
-        const prevSibling = evt.item.previousElementSibling;
-        const prevId = prevSibling ? prevSibling.dataset.id : null;
-        if (prevId) {
-          const prevIndex = allTasks.findIndex(t => t._id === prevId);
-          allTasks.splice(prevIndex + 1, 0, movedTask);
-        } else {
-          allTasks.push(movedTask);
-        }
+        // Perform category and position updates on the server
+        await Meteor.callAsync('tasks.moveTask', movedId, targetCategory, sourceCategory, newIndex);
       }
-
-      const tasksOrder = allTasks.map((task, index) => ({
-        id: task._id,
-        position: index
-      }));
-      await Meteor.callAsync('tasks.updatePositions', tasksOrder);
-    }
+    });
   });
 });
 
 Template.app.helpers({
-  tasks() {
-    const instance = Template.instance();
-    const filter = instance.categoryFilter.get();
-    const query = filter ? { category: filter } : {};
-    return TasksCollection.find(query, { sort: { position: 1 } });
+  tasksByCategory(category) {
+    return TasksCollection.find({ category }, { sort: { position: 1 } });
   },
 });
 
 Template.app.events({
-  'change .category-filter'(event, templateInstance) {
-    templateInstance.categoryFilter.set(event.target.value);
-  },
   async 'submit .task-form'(event) {
     event.preventDefault();
 
@@ -71,7 +45,8 @@ Template.app.events({
 
     if (!text) return;
 
-    const totalCount = await TasksCollection.find().countAsync();
+    // Get task count in the target category for positioning
+    const totalCount = await TasksCollection.find({ category }).countAsync();
 
     await Meteor.callAsync('tasks.insert', text, category, totalCount);
 

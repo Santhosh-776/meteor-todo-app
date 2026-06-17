@@ -1,44 +1,34 @@
 :root {
   /* Vibrant & Balanced Color Palette */
-  --bg-app: #0f172a;
-  /* Slate 900 */
-  --bg-card: rgba(30, 41, 59, 0.7);
-  /* Slate 800 with transparency for glassmorphism */
+  --bg-app: #0f172a; /* Slate 900 */
+  --bg-card: rgba(30, 41, 59, 0.7); /* Slate 800 with transparency for glassmorphism */
   --bg-input: #1e293b;
-  --text-primary: #f8fafc;
-  /* Slate 50 */
-  --text-secondary: #94a3b8;
-  /* Slate 400 */
-  --text-muted: #64748b;
-  /* Slate 500 */
+  --text-primary: #f8fafc; /* Slate 50 */
+  --text-secondary: #94a3b8; /* Slate 400 */
+  --text-muted: #64748b; /* Slate 500 */
   --border-color: rgba(255, 255, 255, 0.08);
   --border-hover: rgba(255, 255, 255, 0.15);
-
+  
   /* Primary Accent - Premium Violet/Indigo */
-  --color-accent: #6366f1;
-  /* Indigo 500 */
+  --color-accent: #6366f1; /* Indigo 500 */
   --color-accent-hover: #4f46e5;
   --color-accent-glow: rgba(99, 102, 241, 0.35);
 
   /* Categories Colors */
-  --color-work: #0ea5e9;
-  /* Sky 500 */
+  --color-work: #0ea5e9; /* Sky 500 */
   --color-work-bg: rgba(14, 165, 233, 0.15);
-  --color-personal: #10b981;
-  /* Emerald 500 */
+  --color-personal: #10b981; /* Emerald 500 */
   --color-personal-bg: rgba(16, 185, 129, 0.15);
-  --color-urgent: #ef4444;
-  /* Red 500 */
+  --color-urgent: #ef4444; /* Red 500 */
   --color-urgent-bg: rgba(239, 68, 68, 0.15);
-  --color-others: #64748b;
-  /* Slate 500 */
+  --color-others: #64748b; /* Slate 500 */
   --color-others-bg: rgba(100, 116, 139, 0.15);
 
   /* Shadow / Glass Effects */
   --shadow-premium: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
   --shadow-card: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
   --blur-glass: 12px;
-
+  
   --radius-lg: 1rem;
   --radius-md: 0.75rem;
   --radius-sm: 0.375rem;
@@ -56,7 +46,7 @@
 body {
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
   background-color: var(--bg-app);
-  background-image:
+  background-image: 
     radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.1) 0px, transparent 50%),
     radial-gradient(at 100% 100%, rgba(14, 165, 233, 0.08) 0px, transparent 50%);
   color: var(--text-primary);
@@ -71,15 +61,15 @@ body {
 /* App container */
 .app-container {
   width: 100%;
-  max-width: 640px;
+  max-width: 1200px; /* Wider for Kanban board columns */
   background: var(--bg-card);
   backdrop-filter: blur(var(--blur-glass));
   -webkit-backdrop-filter: blur(var(--blur-glass));
   border: 1px solid var(--border-color);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-premium);
-  overflow: hidden;
   padding: 2rem;
+  transition: var(--transition-smooth);
 }
 
 /* Header */
@@ -102,11 +92,11 @@ body {
 .task-form {
   display: flex;
   gap: 0.75rem;
-  margin-bottom: 1.5rem;
+  margin-bottom: 2.5rem;
   flex-direction: column;
 }
 
-@media (min-width: 480px) {
+@media (min-width: 640px) {
   .task-form {
     flex-direction: row;
   }
@@ -154,6 +144,11 @@ body {
   box-shadow: 0 0 0 3px var(--color-accent-glow);
 }
 
+.task-form select option {
+  background-color: var(--bg-input);
+  color: var(--text-primary);
+}
+
 .task-form button {
   background: var(--color-accent);
   color: white;
@@ -178,56 +173,84 @@ body {
   transform: translateY(0);
 }
 
-/* Category Filter section */
-.filter-container {
+/* Kanban Board Layout */
+.kanban-board {
   display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  margin-bottom: 2rem;
+  gap: 1.25rem;
+  overflow-x: auto;
   padding-bottom: 1rem;
-  border-bottom: 1px solid var(--border-color);
-  justify-content: flex-end;
+  align-items: flex-start;
+  scroll-behavior: smooth;
 }
 
-.filter-container label {
-  font-size: 0.85rem;
-  color: var(--text-secondary);
-  font-weight: 500;
+/* Custom Scrollbar for board scrolling */
+.kanban-board::-webkit-scrollbar {
+  height: 8px;
 }
 
-.filter-container select {
-  background: transparent;
-  border: 1px solid var(--border-color);
+.kanban-board::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.02);
   border-radius: var(--radius-sm);
-  padding: 0.4rem 1.5rem 0.4rem 0.75rem;
-  color: var(--text-primary);
-  font-size: 0.85rem;
-  cursor: pointer;
+}
+
+.kanban-board::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-sm);
+}
+
+.kanban-board::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* Kanban Columns */
+.kanban-column {
+  flex: 1 0 260px; /* Grow, don't shrink below 260px, start at 260px */
+  background: rgba(15, 23, 42, 0.3);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 1.25rem 1rem;
   transition: var(--transition-smooth);
-  appearance: none;
-  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
-  background-repeat: no-repeat;
-  background-position: right 0.5rem center;
-  background-size: 0.8em;
 }
 
-.filter-container select:focus {
-  outline: none;
-  border-color: var(--color-accent);
+.kanban-column:hover {
+  border-color: var(--border-hover);
+  background: rgba(15, 23, 42, 0.45);
 }
 
-.filter-container select option,
-.task-form select option {
-  background-color: var(--bg-input);
+/* Column Headers */
+.column-header {
+  margin-bottom: 1.25rem;
+  padding-bottom: 0.625rem;
+  border-bottom: 2px solid var(--border-color);
+}
+
+.column-header h2 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
   color: var(--text-primary);
 }
 
-/* Tasks list styling */
+.column-header.Work { border-bottom-color: var(--color-work); }
+.column-header.Personal { border-bottom-color: var(--color-personal); }
+.column-header.Urgent { border-bottom-color: var(--color-urgent); }
+.column-header.Others { border-bottom-color: var(--color-others); }
+
+.column-header.Work h2 { color: var(--color-work); }
+.column-header.Personal h2 { color: var(--color-personal); }
+.column-header.Urgent h2 { color: var(--color-urgent); }
+.column-header.Others h2 { color: var(--color-others); }
+
+/* Tasks list within column */
 .tasks-list {
   list-style-type: none;
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
+  min-height: 350px; /* Large drop target area */
+  border-radius: var(--radius-sm);
+  transition: var(--transition-smooth);
 }
 
 /* Tasks Items */
@@ -238,23 +261,22 @@ body {
   background: rgba(30, 41, 59, 0.4);
   border: 1px solid var(--border-color);
   border-radius: var(--radius-md);
-  padding: 1rem 1.25rem;
+  padding: 0.875rem 1rem;
   transition: var(--transition-smooth);
 }
 
 .task-item:hover {
   border-color: var(--border-hover);
-  background: rgba(30, 41, 59, 0.6);
+  background: rgba(30, 41, 59, 0.65);
   transform: translateY(-1px);
 }
 
 .task-content {
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: 0.75rem;
   flex: 1;
   cursor: grab;
-  /* Grab handle styling */
 }
 
 .task-content:active {
@@ -262,7 +284,7 @@ body {
 }
 
 .task-item .text {
-  font-size: 1rem;
+  font-size: 0.95rem;
   color: var(--text-primary);
   transition: var(--transition-smooth);
   word-break: break-word;
@@ -272,10 +294,11 @@ body {
 .checkbox-container {
   display: block;
   position: relative;
-  width: 1.25rem;
-  height: 1.25rem;
+  width: 1.15rem;
+  height: 1.15rem;
   cursor: pointer;
   user-select: none;
+  flex-shrink: 0;
 }
 
 .checkbox-container input {
@@ -290,19 +313,19 @@ body {
   position: absolute;
   top: 0;
   left: 0;
-  height: 1.25rem;
-  width: 1.25rem;
+  height: 1.15rem;
+  width: 1.15rem;
   background-color: transparent;
   border: 2px solid var(--text-muted);
   border-radius: var(--radius-sm);
   transition: var(--transition-smooth);
 }
 
-.checkbox-container:hover input~.checkmark {
+.checkbox-container:hover input ~ .checkmark {
   border-color: var(--color-accent);
 }
 
-.checkbox-container input:checked~.checkmark {
+.checkbox-container input:checked ~ .checkmark {
   background-color: var(--color-accent);
   border-color: var(--color-accent);
 }
@@ -313,15 +336,15 @@ body {
   display: none;
 }
 
-.checkbox-container input:checked~.checkmark::after {
+.checkbox-container input:checked ~ .checkmark::after {
   display: block;
 }
 
 .checkbox-container .checkmark::after {
-  left: 5px;
+  left: 4px;
   top: 1px;
-  width: 4px;
-  height: 8px;
+  width: 3px;
+  height: 6px;
   border: solid white;
   border-width: 0 2px 2px 0;
   transform: rotate(45deg);
@@ -329,7 +352,7 @@ body {
 
 /* Checked / completed state */
 .task-item.checked {
-  opacity: 0.6;
+  opacity: 0.55;
 }
 
 .task-item.checked .text {
@@ -339,13 +362,14 @@ body {
 
 /* Category Badges */
 .category-badge {
-  font-size: 0.75rem;
+  font-size: 0.7rem;
   font-weight: 700;
   text-transform: uppercase;
-  padding: 0.25rem 0.6rem;
+  padding: 0.2rem 0.5rem;
   border-radius: var(--radius-sm);
   letter-spacing: 0.05em;
   white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .category-badge.Work {
@@ -373,12 +397,13 @@ body {
   background: transparent;
   color: var(--text-muted);
   border: none;
-  font-size: 1.5rem;
+  font-size: 1.3rem;
   cursor: pointer;
-  padding: 0 0.5rem;
+  padding: 0 0.4rem;
   line-height: 1;
   transition: var(--transition-smooth);
   border-radius: var(--radius-sm);
+  margin-left: 0.5rem;
 }
 
 .delete-btn:hover {
@@ -388,14 +413,14 @@ body {
 
 /* SortableJS drag styling */
 .sortable-ghost {
-  opacity: 0.3;
+  opacity: 0.2;
   border: 1px dashed var(--color-accent);
-  background: rgba(99, 102, 241, 0.05) !important;
+  background: rgba(99, 102, 241, 0.04) !important;
 }
 
 .sortable-chosen {
   background: rgba(30, 41, 59, 0.8) !important;
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
 }
 
 .sortable-drag {
